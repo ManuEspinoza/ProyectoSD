@@ -5,7 +5,9 @@
  */
 package proyectosistemasdistribuidos;
 
+import client.Paquete;
 import client.StoreMessage;
+import common.Store;
 import server.Server;
 import java.io.IOException;
 import java.util.logging.Level;
@@ -31,23 +33,30 @@ public class ProyectoSistemasDistribuidos {
                 
             } catch (IOException ex) {
                 System.out.println("error server");
-                //Logger.getLogger(Taller1sd.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException  ex){
+                System.out.println("client server");
             }
             
         } else {
             try {
-                //participante
                 
+                String storeParameters = args[3];
+                String[] parameters = storeParameters.split("#");
+                String nameStore = parameters[0];
+                int port = new Integer(args[2]);
+                String ip = args[1];
+                Store store = new Store(nameStore, parameters[1], new Integer(parameters[2]));
+                Paquete paqueteNewStore = new Paquete("regTienda");
+                paqueteNewStore.setStore(store);
                 StoreMessage message = new StoreMessage();
-                message.startConnection(args[1], new Integer(args[2]));
-                
-                String response = message.sendMessage(args[3]);
-                
-                System.out.println("Respuesta server: " + response);
+                message.startConnection(paqueteNewStore, ip, port);
                 
             } catch (IOException ex) {
                 System.out.println("error client message");
                 Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex){
+                System.out.println("Error clase no encontrada");
             }
         }
         

@@ -15,6 +15,7 @@ import java.util.logging.Logger;
  *
  * @author franciscogomezlopez
  */
+/*
 public class SendMessageThread implements Runnable {
 
     private String value = null;
@@ -32,9 +33,9 @@ public class SendMessageThread implements Runnable {
     public void setSeconds(Integer seconds) {
         this.seconds = seconds;
     }
-
+*/
     
-    @Override
+/*    @Override
     public void run() {
 
         try {
@@ -54,6 +55,6 @@ public class SendMessageThread implements Runnable {
             System.out.println("Error (1002): sending -- " + value.substring(5) + " , " + value.substring(0, 4) + " , " + this.message);
             //Logger.getLogger(SendMessageThread.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }*/
 
-}
+//}

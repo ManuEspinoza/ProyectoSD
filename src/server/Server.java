@@ -5,11 +5,13 @@
  */
 package server;
 
+import client.Paquete;
 import client.StoreMessage;
 import common.Store;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
@@ -41,33 +43,58 @@ public class Server {
     private boolean sendFinishGame = false;
     private ArrayList<Store> stores = new ArrayList();
 
-    public void start(int port, String name) throws IOException {
-        //<----------- No cambiar inicia el servidor para las tiendas ------------>
+    public void start(int port, String name) throws IOException, ClassNotFoundException {
+       
         System.out.println("Im listening ... on " + port + " I'm " + name);
         this.name = name;
         serverSocket = new ServerSocket(port);
-        clientSocket = serverSocket.accept();
-        out = new PrintWriter(clientSocket.getOutputStream(), true);
-        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-        String command = in.readLine();
-        //<----------------------------------------------------------------------->
-        if (command.startsWith("regstore")) {
+        Paquete mi_paquete;
+       
+        while(true){
+            clientSocket = serverSocket.accept();
+            ObjectInputStream message = new ObjectInputStream(clientSocket.getInputStream());
+            mi_paquete = (Paquete) message.readObject();
+            
+            if("regTienda".equals(mi_paquete.getCode())){
+                Store newStore = mi_paquete.getStore();
+                this.stores.add(newStore);
+                for(Store store: this.stores){
+                    if(!this.name.equals(store.getName())){
+                        Paquete paqueteUpdate = new Paquete("updateStores");
+                        paqueteUpdate.setStores(this.stores);
+                        StoreMessage updateStores =  new StoreMessage();
+                        updateStores.startConnection(paqueteUpdate, store.getIp(), store.getPort());
+                    }
+                }
+                System.out.println(this.stores.toString());
+                Paquete response = new Paquete("Tienda agregada");
+                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                sendMessage.writeObject(response);
+            } else if("updateStores".equals(mi_paquete.getCode())){
+                this.stores = mi_paquete.getStores();
+                System.out.println(this.stores.toString());
+               Paquete response = new Paquete("Lista Actualizada");
+               ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                sendMessage.writeObject(response);
+            }
+        }
+       // if (command.startsWith("regstore")) {
               
 //            int totallength = "regtienda".length();
 //            String partipante = greeting.substring(totallength, totallength + 4);
 //            String puerto = greeting.substring(totallength + 4, totallength + 8);
 //            String ip = greeting.substring(totallength + 8);
-            String[] parameters =  command.split("#");
-            String nameStore = parameters[1];
-            int portStore = Integer.parseInt(parameters[2]);
-            String ipStore = parameters[3];
-            Store store = new Store(nameStore, ipStore, portStore);
-            
-            stores.add(store);
-            
-            for(Store specificStore: stores){
+//            String[] parameters =  command.split("#");
+//            String nameStore = parameters[1];
+//            int portStore = Integer.parseInt(parameters[2]);
+//            String ipStore = parameters[3];
+//            Store store = new Store(nameStore, ipStore, portStore);
+//            
+//            stores.add(store);
+//            
+//            for(Store specificStore: stores){
 //                ObjectOutputStream paquete_datos = new ObjectOutputStream(socket.getOutputStream());
-            }
+//            }
             
 
             // agregar participante
@@ -88,147 +115,19 @@ public class Server {
 //
 //            }
 
-            out.println(store.toString());
+//            out.println(store.toString());
 
-        } else if (command.startsWith("recibepapa")) {
-
-            this.tengopapa = true;
-            System.out.println("TEngo la papa " + this.name);
-            out.println("tienes la papa" + this.name);
-            // agregar participante
-
-            if (this.finishGame && this.tengopapa) {
-
-                System.out.println("perdiste:" + this.name);
-                System.exit(0);
-            }
-
-        } else if (command.startsWith("sequemo")) {
-
-            this.finishGame = true;
-
-            // agregar participante
-            if (this.finishGame && this.tengopapa) {
-
-                System.out.println("perdiste:" + this.name);
-                System.exit(0);
-            }
-
-            if (!this.sendFinishGame) {
-                for (Map.Entry<String, String> entry : participant.entrySet()) {
-                    String key = entry.getKey();
-                    String value = entry.getValue();
-
-                    if (!key.equals(this.name)) {
-                        SendMessageThread hilo = new SendMessageThread();
-                        hilo.setSeconds(0);
-                        hilo.setValue(value);
-                        hilo.setMessage("sequemo");
-                        (new Thread(hilo)).start();
-                    }
-
-                }
-                this.sendFinishGame = true;
-            }
-            out.println("finish se quemo");
-
-        } else if (command.startsWith("actualizalista")) {
-
-            String lista = command.substring("actualizalista".length());
-
-            String[] listatmp = lista.split(",");
-            this.participant = new HashMap<String, String>();
-            for (String tmp : listatmp) {
-                String[] finaltmp = tmp.split("#");
-                this.participant.put(finaltmp[0], finaltmp[1]);
-            }
-
-        } else {
-            System.out.println("Mensaje no reconocido");
-            out.println("mensaje corrupto vete de aqui");
-        }
-
-        in.close();
-        out.close();
-        clientSocket.close();
-        serverSocket.close();
-
-        if (this.tengopapa) {
-            try {
-                this.sendingPapa();
-            } catch (InterruptedException ex) {
-                System.out.println("Error sending papa");
-                //Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-
-        this.start(port, name);
-
+        } 
+//    public void stop() throws IOException {
+//        in.close();
+//        out.close();
+//        clientSocket.close();
+//        serverSocket.close();
+//    }
     }
 
-    private void sendingPapa() throws InterruptedException, IOException {
+   
 
-        boolean found = false;
+    
 
-        for (Map.Entry<String, String> entry : participant.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
 
-            if (key.equals(this.name)) {
-                found = true;
-            } else {
-
-                if (found) {
-                    // siguiente
-//                    ClientMessage sendmessage = new ClientMessage();
-//                    sendmessage.startConnection(value.substring(5), new Integer(value.substring(0, 4)));
-//                    sendmessage.sendMessage("recibepapa");
-
-                    SendMessageThread hilo = new SendMessageThread();
-                    hilo.setValue(value);
-                    hilo.setMessage("recibepapa");
-                    (new Thread(hilo)).start();
-                    System.out.println("bye hilo1");
-                    this.tengopapa = false;
-                    break;
-                }
-            }
-
-        }
-
-        if (this.tengopapa) {
-            Map.Entry<String, String> entry = this.participant.entrySet().iterator().next();
-            String key = entry.getKey();
-            String value = entry.getValue();
-
-            SendMessageThread hilo = new SendMessageThread();
-            hilo.setValue(value);
-            hilo.setMessage("recibepapa");
-            (new Thread(hilo)).start();
-            System.out.println("bye hilo2");
-            this.tengopapa = false;
-        }
-    }
-
-    private String serializarLista() {
-
-        String finallista = "";
-
-        for (Map.Entry<String, String> entry : participant.entrySet()) {
-            String key = entry.getKey();
-            String value = entry.getValue();
-            finallista += key + "#" + value + ",";
-
-        }
-
-        return finallista;
-    }
-
-    public void stop() throws IOException {
-        in.close();
-        out.close();
-        clientSocket.close();
-        serverSocket.close();
-    }
-
-}
