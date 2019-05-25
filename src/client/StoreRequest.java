@@ -5,12 +5,9 @@
  */
 package client;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -20,11 +17,19 @@ import java.net.Socket;
 public class StoreRequest {
     
     private Socket clientSocket;
-    private PrintWriter out;
-    private BufferedReader in;
- 
+   
     public void send(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
+        //Envia peticion al servidor
         
+        clientSocket = new Socket(ip,port);
+        ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+        sendMessage.writeObject(paquete);
+   
+        clientSocket.close();
+        sendMessage.close();
+    }
+    
+    public void sendWithResponse(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
         //Envia peticion al servidor
         
         clientSocket = new Socket(ip,port);
@@ -38,17 +43,5 @@ public class StoreRequest {
      
         clientSocket.close();
         sendMessage.close();
-    }
- 
-    public String sendMessage(String msg) throws IOException {
-        out.println(msg);
-        String resp = in.readLine();
-        return resp;
-    }
- 
-    public void stopConnection() throws IOException {
-        in.close();
-        out.close();
-        clientSocket.close();
     }
 }

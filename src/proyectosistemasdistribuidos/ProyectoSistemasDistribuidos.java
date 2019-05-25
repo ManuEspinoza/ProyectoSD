@@ -27,7 +27,6 @@ public class ProyectoSistemasDistribuidos {
         
         if(args[0].startsWith("server")) {
             try {
-                
                 Server server = new Server();
                 server.start(new Integer(args[1]), args[2]);
                 
@@ -37,10 +36,8 @@ public class ProyectoSistemasDistribuidos {
             } catch (ClassNotFoundException  ex){
                 System.out.println("client server");
             }
-            
         } else {
             try {
-           
                 String storeParameters = args[3];
                 String[] parameters = storeParameters.split("#");
                 String nameStore = parameters[0];
@@ -51,7 +48,7 @@ public class ProyectoSistemasDistribuidos {
                 Paquete paqueteNewStore = new Paquete("regTienda");
                 paqueteNewStore.setStore(store);
                 StoreRequest request = new StoreRequest();
-                request.send(paqueteNewStore, ip, port);
+                request.sendWithResponse(paqueteNewStore, ip, port);
             } catch (IOException ex) {
                 System.out.println("error client message");
                 Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);
