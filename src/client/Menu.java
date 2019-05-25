@@ -80,6 +80,8 @@ public class Menu {
                         Paquete paquete = new Paquete("regProduct");
                         paquete.setStore(this.store);
                         paquete.setProduct(producto);
+                        System.out.println(port);
+                        System.out.println(ip);
                         StoreRequest request = new StoreRequest();
                         request.sendWithResponse(paquete, ip, port);
                     }catch(IOException ex){
