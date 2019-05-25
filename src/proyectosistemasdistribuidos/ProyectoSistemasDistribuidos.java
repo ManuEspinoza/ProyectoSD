@@ -5,6 +5,7 @@
  */
 package proyectosistemasdistribuidos;
 
+import client.Menu;
 import client.Paquete;
 import client.StoreRequest;
 import common.Store;
@@ -50,7 +51,8 @@ public class ProyectoSistemasDistribuidos {
                 StoreRequest request = new StoreRequest();
                 request.sendWithResponse(paqueteNewStore, ip, port);
                 
-                
+                Menu menu = new Menu(ip,port,store);
+                menu.mostrar();
                
             } catch (IOException ex) {
                 System.out.println("error client message");
