@@ -44,4 +44,22 @@ public class StoreRequest {
         clientSocket.close();
         sendMessage.close();
     }
+    
+        public Paquete sendPaquete(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
+        //Envia peticion al servidor
+        
+        clientSocket = new Socket(ip,port);
+        ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+        sendMessage.writeObject(paquete);
+        
+        //Espera respuesta del servidor
+        ObjectInputStream message = new ObjectInputStream(clientSocket.getInputStream());
+        Paquete mi_paquete = (Paquete) message.readObject();
+     
+        clientSocket.close();
+        sendMessage.close();
+        
+        return mi_paquete;
+    }
+
 }

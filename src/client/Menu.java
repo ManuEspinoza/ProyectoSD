@@ -8,6 +8,7 @@ package client;
 import common.Product;
 import common.Store;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -104,8 +105,20 @@ public class Menu {
                     }
                     break;
                 case 3:
-                    System.out.println("Has seleccionado la opcion 3");
+                    try{
+                        Paquete paquete = new Paquete("ListProducto");
+                        StoreRequest request = new StoreRequest();
+                        Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
+                        ArrayList<Store> stores = mi_paquete.getStores();
+                        System.out.println(stores);
+                    }catch(IOException ex){
+                        System.out.println("Error de sistema operativo");
+                    }
+                    catch(ClassNotFoundException ex){
+                        System.out.println("Error de clase no encontrada");
+                    }
                     break;
+                    
                 case 4:
                     System.out.println("Has seleccionado la opcion 3");
                     break;

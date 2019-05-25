@@ -96,6 +96,16 @@ public class Server {
                 }
                 System.out.println(mi_paquete.getCode());
             }
+            
+            else if ("ListProducto".equals(mi_paquete.getCode())){
+                System.out.println(mi_paquete.getCode());
+                Paquete paquetet = new Paquete("");
+                paquetet.setStores(this.stores);
+                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                sendMessage.writeObject(paquetet);
+            }
+              
+            
         }
     } 
     
