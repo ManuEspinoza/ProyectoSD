@@ -49,6 +49,8 @@ public class ProyectoSistemasDistribuidos {
                 paqueteNewStore.setStore(store);
                 StoreRequest request = new StoreRequest();
                 request.sendWithResponse(paqueteNewStore, ip, port);
+                
+                
                
             } catch (IOException ex) {
                 System.out.println("error client message");
