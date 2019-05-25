@@ -91,6 +91,8 @@ public class Menu {
                         Paquete paquete = new Paquete("regProduct");
                         paquete.setStore(this.store);
                         paquete.setProduct(producto);
+                        System.out.println(port);
+                        System.out.println(ip);
                         StoreRequest request = new StoreRequest();
                         request.send(paquete, ip, port);
                         System.out.println("Producto agregado");
