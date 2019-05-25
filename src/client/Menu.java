@@ -68,7 +68,18 @@ public class Menu {
             opcion = sn.nextInt();
             switch (opcion) {
                 case 1:
-                    System.out.println("Has seleccionado la opcion 1");
+                    try{
+                        Store store = new Store("Prueba", "", 9700);
+                        Paquete paqueteNewStore = new Paquete("regProduct");
+                        StoreRequest request = new StoreRequest();
+                        request.send(paqueteNewStore, ip,port );
+                        System.out.println("all good");
+                    }catch(IOException ex){
+                        System.out.println("Error de sistema operativo");
+                    }
+                    catch(ClassNotFoundException ex){
+                        System.out.println("Error de clase no encontrada");
+                    }
                     break;
                 case 2:
                     try{
@@ -81,7 +92,8 @@ public class Menu {
                         paquete.setStore(this.store);
                         paquete.setProduct(producto);
                         StoreRequest request = new StoreRequest();
-                        request.sendWithResponse(paquete, ip, port);
+                        request.send(paquete, ip, port);
+                        System.out.println("Producto agregado");
                     }catch(IOException ex){
                         System.out.println("Error de sistema operativo");
                     }

@@ -22,6 +22,7 @@ public class Store implements Serializable {
         this.name = name;
         this.ip = ip;
         this.port = port;
+        products = new ArrayList();
     }
 
     public ArrayList<Product> getProducts() {

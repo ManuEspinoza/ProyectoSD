@@ -50,6 +50,7 @@ public class Server {
             mi_paquete = (Paquete) message.readObject();
             
             if("regTienda".equals(mi_paquete.getCode())){
+                
                 Store newStore = mi_paquete.getStore();
                 this.stores.add(newStore);
                 for(Store store: this.stores){
@@ -93,6 +94,7 @@ public class Server {
                         updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
                     }
                 }
+                System.out.println(mi_paquete.getCode());
             }
         }
     } 
