@@ -17,13 +17,13 @@ import java.net.Socket;
  *
  * @author Manuel Espinoza y Madelein Valderrabano
  */
-public class StoreMessage {
+public class StoreRequest {
     
     private Socket clientSocket;
     private PrintWriter out;
     private BufferedReader in;
  
-    public void startConnection(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
+    public void send(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
         
         //Envia peticion al servidor
         

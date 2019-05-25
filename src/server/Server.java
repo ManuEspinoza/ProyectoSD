@@ -6,7 +6,7 @@
 package server;
 
 import client.Paquete;
-import client.StoreMessage;
+import client.StoreRequest;
 import common.Store;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -62,8 +62,8 @@ public class Server {
                     if(!this.name.equals(store.getName())){
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
-                        StoreMessage updateStores =  new StoreMessage();
-                        updateStores.startConnection(paqueteUpdate, store.getIp(), store.getPort());
+                        StoreRequest updateStores =  new StoreRequest();
+                        updateStores.send(paqueteUpdate, store.getIp(), store.getPort());
                     }
                 }
                 System.out.println(this.stores.toString());
