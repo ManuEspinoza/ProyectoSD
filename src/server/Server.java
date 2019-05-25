@@ -56,7 +56,7 @@ public class Server {
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
                         StoreRequest updateStores =  new StoreRequest();
-                        updateStores.send(paqueteUpdate, store.getIp(), store.getPort());
+                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
                     }
                 }
                 System.out.println(this.stores.toString());
