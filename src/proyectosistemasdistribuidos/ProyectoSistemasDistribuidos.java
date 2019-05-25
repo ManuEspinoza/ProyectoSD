@@ -51,7 +51,7 @@ public class ProyectoSistemasDistribuidos {
                 StoreRequest request = new StoreRequest();
                 request.sendWithResponse(paqueteNewStore, ip, port);
                 
-                Menu menu = new Menu(ip,port,store);
+                Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);
                 menu.mostrar();
                
             } catch (IOException ex) {
