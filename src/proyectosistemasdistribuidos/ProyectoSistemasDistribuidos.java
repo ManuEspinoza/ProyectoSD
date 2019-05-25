@@ -49,6 +49,7 @@ public class ProyectoSistemasDistribuidos {
                 paqueteNewStore.setStore(store);
                 StoreRequest request = new StoreRequest();
                 request.sendWithResponse(paqueteNewStore, ip, port);
+               
             } catch (IOException ex) {
                 System.out.println("error client message");
                 Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);

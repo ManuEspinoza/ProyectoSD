@@ -1,5 +1,6 @@
 package client;
 
+import common.Product;
 import common.Store;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -18,7 +19,16 @@ public class Paquete implements Serializable{
     String code;
     Store store;
     ArrayList<Store> stores;
+    Product product;
 
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+    
     public ArrayList<Store> getStores() {
         return stores;
     }

@@ -7,6 +7,7 @@ package server;
 
 import client.Paquete;
 import client.StoreRequest;
+import common.Product;
 import common.Store;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,15 +64,46 @@ public class Server {
                 Paquete response = new Paquete("Tienda agregada");
                 ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
                 sendMessage.writeObject(response);
+            
             } else if("updateStores".equals(mi_paquete.getCode())){
                 this.stores = mi_paquete.getStores();
                 System.out.println(this.stores.toString());
-               Paquete response = new Paquete("Lista Actualizada");
-               ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                Paquete response = new Paquete("Lista Actualizada");
+                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
                 sendMessage.writeObject(response);
+            
+            } else if("regProduct".equals(mi_paquete.getCode())){
+                Product product = mi_paquete.getProduct();
+                int selfStore = getSelfStore();
+                Store storeUpdate = stores.get(selfStore);
+                storeUpdate.getProducts().add(product);
+                stores.set(selfStore,storeUpdate);
+                
+                for(int i = 0; i < stores.size(); i++){
+                    if(!stores.get(i).getName().equals(this.name)){
+                        stores.get(i).getProducts().add(new Product(product.getCode(),0));
+                    }
+                }
+                
+                for(Store store: this.stores){
+                    if(!this.name.equals(store.getName())){
+                        Paquete paqueteUpdate = new Paquete("updateStores");
+                        paqueteUpdate.setStores(this.stores);
+                        StoreRequest updateStores =  new StoreRequest();
+                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
+                    }
+                }
             }
         }
     } 
+    
+    public int getSelfStore(){
+        for(int i = 0; i < stores.size();i++){
+            if(stores.get(i).getName().equals(this.name))
+                return i;
+        }
+        return -1;
+    }
 }
 
    

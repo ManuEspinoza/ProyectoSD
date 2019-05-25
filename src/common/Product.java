@@ -16,9 +16,8 @@ public class Product implements Serializable {
     private String name;
     private int quantity;
 
-    public Product(int code, String name, int quantity) {
+    public Product(int code, int quantity) {
         this.code = code;
-        this.name = name;
         this.quantity = quantity;
     }
 
