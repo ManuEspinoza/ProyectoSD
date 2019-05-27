@@ -104,10 +104,10 @@ public class Menu {
                         try{
                             System.out.print("Ingrese el codigo del producto: ");
                             codigo = sn.nextInt();
-                            if (codigo!=0){ //Codigo no puede ser 0
+                          
                                 System.out.print("Ingrese la cantidad del producto: ");
                                 cantidad = sn.nextInt();
-                                if (cantidad>0){ //Cantidad debe ser > 0
+                                
                                     Product producto = new Product(codigo, cantidad);
                                     Paquete paquete = new Paquete("regProduct");
                                     paquete.setStore(this.store);
@@ -115,9 +115,8 @@ public class Menu {
                                     StoreRequest request = new StoreRequest();
                                     request.send(paquete, ip, port);
                                     System.out.println("Producto agregado");
-                                }else{ System.out.println("Debe ingresar una cantidad valida");}
-                            }
-                            else{ System.out.println("Debe ingresar un codigo distinto");}
+                                
+                          
                         }catch(IOException ex){
                             System.out.println("Error de sistema operativo");
                         }
