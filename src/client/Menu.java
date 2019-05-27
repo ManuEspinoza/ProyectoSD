@@ -9,6 +9,7 @@ import common.Product;
 import common.Store;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -65,8 +66,11 @@ public class Menu {
             System.out.println(" 2. Cargar productos de la empresa");
             System.out.println(" 3. Listar productos de la empresa por tienda");
             System.out.println(" 4. Agregar tiendas al sistema");
-            System.out.println("Escribe una de las opciones: ");
-            opcion = sn.nextInt();
+            
+             try{
+                System.out.println("Escribe una de las opciones");
+                opcion = sn.nextInt();
+            
             switch (opcion) {
                 case 1:
                     try{
@@ -86,8 +90,10 @@ public class Menu {
                     try{
                         System.out.println("Ingrese el codigo del producto: ");
                         codigo = sn.nextInt();
+                        if (codigo!=0){ //Codigo no puede ser 0
                         System.out.println("Ingrese la cantidad del producto: ");
                         cantidad = sn.nextInt();
+                        if (cantidad>0){ //Cantidad debe ser > 0
                         Product producto = new Product(codigo, cantidad);
                         Paquete paquete = new Paquete("regProduct");
                         paquete.setStore(this.store);
@@ -97,11 +103,15 @@ public class Menu {
                         StoreRequest request = new StoreRequest();
                         request.send(paquete, ip, port);
                         System.out.println("Producto agregado");
+                        } else{System.out.println("Debe ingresar una cantidad valida");}
+                        }
+                        else 
+                        {System.out.println("Debe ingresar un codigo distinto");}
                     }catch(IOException ex){
                         System.out.println("Error de sistema operativo");
                     }
                     catch(ClassNotFoundException ex){
-                        System.out.println("Error de clase no encontrada");
+                      System.out.println("Error de clase no encontrada");
                     }
                     break;
                 case 3:
@@ -124,6 +134,11 @@ public class Menu {
                     break;
                 default:
                     System.out.println("Solo números entre 1 y 4");
+                    }
+            
+            }catch (InputMismatchException e) {
+            System.out.println("Debes insertar un número");
+            sn.next();
             }
         }        
     }
