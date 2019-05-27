@@ -58,87 +58,97 @@ public class Menu {
         Scanner sn = new Scanner(System.in);
         boolean salir = false;
         int opcion; //Guardaremos la opcion del usuario
-        int codigo; int cantidad;
+        int codigo; int cantidad; int continuar;
         while (!salir) {
-            
-            System.out.println("Menú:\n");
+            System.out.println("\n Menú:\n");
             System.out.println(" 1. Listar productos de la empresa");
             System.out.println(" 2. Cargar productos de la empresa");
-            System.out.println(" 3. Listar productos de la empresa por tienda");
-            System.out.println(" 4. Agregar tiendas al sistema");
-            
-             try{
-                System.out.println("Escribe una de las opciones");
+            System.out.println(" 3. Listar productos de la empresa por tienda");            
+            try{
+                System.out.print("Escribe una de las opciones: ");
                 opcion = sn.nextInt();
-            
-            switch (opcion) {
-                case 1:
-                    try{
-                        Store store = new Store("Prueba", "", 9700);
-                        Paquete paqueteNewStore = new Paquete("regProduct");
-                        StoreRequest request = new StoreRequest();
-                        request.send(paqueteNewStore, ip,port );
-                        System.out.println("all good");
-                    }catch(IOException ex){
-                        System.out.println("Error de sistema operativo");
-                    }
-                    catch(ClassNotFoundException ex){
-                        System.out.println("Error de clase no encontrada");
-                    }
-                    break;
-                case 2:
-                    try{
-                        System.out.println("Ingrese el codigo del producto: ");
-                        codigo = sn.nextInt();
-                        if (codigo!=0){ //Codigo no puede ser 0
-                        System.out.println("Ingrese la cantidad del producto: ");
-                        cantidad = sn.nextInt();
-                        if (cantidad>0){ //Cantidad debe ser > 0
-                        Product producto = new Product(codigo, cantidad);
-                        Paquete paquete = new Paquete("regProduct");
-                        paquete.setStore(this.store);
-                        paquete.setProduct(producto);
-                        System.out.println(port);
-                        System.out.println(ip);
-                        StoreRequest request = new StoreRequest();
-                        request.send(paquete, ip, port);
-                        System.out.println("Producto agregado");
-                        } else{System.out.println("Debe ingresar una cantidad valida");}
+                switch (opcion) {
+                    case 1:
+                        try{
+                            Paquete paquete = new Paquete("ListProducto");
+                            StoreRequest request = new StoreRequest();
+                            Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
+                            ArrayList<Store> stores = mi_paquete.getStores();
+                            for (int i = 0; i < stores.size(); i++) {
+                                ArrayList<Product> productos = stores.get(i).getProducts();
+                                System.out.println("\n");
+                                for (int j = 0; j < productos.size(); j++) {
+                                    System.out.print("Tienda: " +
+                                           stores.get(i).getName() + " Codigo producto: " +
+                                           productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
+                                }
+                            }
+                            System.out.print("Presione una tecla para continuar..."); continuar = sn.nextInt();
+                        }catch(IOException ex){
+                            System.out.println("Error de sistema operativo");
                         }
-                        else 
-                        {System.out.println("Debe ingresar un codigo distinto");}
-                    }catch(IOException ex){
-                        System.out.println("Error de sistema operativo");
-                    }
-                    catch(ClassNotFoundException ex){
-                      System.out.println("Error de clase no encontrada");
-                    }
-                    break;
-                case 3:
-                    try{
-                        Paquete paquete = new Paquete("ListProducto");
-                        StoreRequest request = new StoreRequest();
-                        Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
-                        ArrayList<Store> stores = mi_paquete.getStores();
-                        System.out.println(stores);
-                    }catch(IOException ex){
-                        System.out.println("Error de sistema operativo");
-                    }
-                    catch(ClassNotFoundException ex){
-                        System.out.println("Error de clase no encontrada");
-                    }
-                    break;
-                    
-                case 4:
-                    System.out.println("Has seleccionado la opcion 3");
-                    break;
-                default:
-                    System.out.println("Solo números entre 1 y 4");
-                    }
-            
+                        catch(ClassNotFoundException ex){
+                            System.out.println("Error de clase no encontrada");
+                        }
+                        break;
+                    case 2:
+                        try{
+                            System.out.print("Ingrese el codigo del producto: ");
+                            codigo = sn.nextInt();
+                            if (codigo!=0){ //Codigo no puede ser 0
+                                System.out.print("Ingrese la cantidad del producto: ");
+                                cantidad = sn.nextInt();
+                                if (cantidad>0){ //Cantidad debe ser > 0
+                                    Product producto = new Product(codigo, cantidad);
+                                    Paquete paquete = new Paquete("regProduct");
+                                    paquete.setStore(this.store);
+                                    paquete.setProduct(producto);
+                                    StoreRequest request = new StoreRequest();
+                                    request.send(paquete, ip, port);
+                                    System.out.println("Producto agregado");
+                                }else{ System.out.println("Debe ingresar una cantidad valida");}
+                            }
+                            else{ System.out.println("Debe ingresar un codigo distinto");}
+                        }catch(IOException ex){
+                            System.out.println("Error de sistema operativo");
+                        }
+                        catch(ClassNotFoundException ex){
+                          System.out.println("Error de clase no encontrada");
+                        }
+                        break;
+                    case 3:
+                        try{
+                            Paquete paquete = new Paquete("ListProducto");
+                            StoreRequest request = new StoreRequest();
+                            Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
+                            ArrayList<Store> stores = mi_paquete.getStores();
+                            for (int i = 0; i < stores.size(); i++) {
+                                ArrayList<Product> productos = stores.get(i).getProducts();
+                                System.out.println("\n");
+                                for (int j = 0; j < productos.size(); j++) {
+                                    System.out.print("Tienda: " +
+                                           stores.get(i).getName() + " Codigo producto: " +
+                                           productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
+                                }
+                            }
+                            System.out.print("Presione una tecla para continuar..."); continuar = sn.nextInt();
+                        }catch(IOException ex){
+                            System.out.println("Error de sistema operativo");
+                        }
+                        catch(ClassNotFoundException ex){
+                            System.out.println("Error de clase no encontrada");
+                        }
+                        break;
+                    case 4:
+                        System.out.println("Has seleccionado la opcion 3");
+                        break;
+                    default:
+                        System.out.println("Solo números entre 1 y 4");
+                        }
+
             }catch (InputMismatchException e) {
-            System.out.println("Debes insertar un número");
-            sn.next();
+                System.out.println("Debes insertar un número");
+                sn.next();
             }
         }        
     }
