@@ -53,6 +53,9 @@ public class Server {
                 
                 Store newStore = mi_paquete.getStore();
                 if(!verifyName(newStore.getName())){
+                    if(this.stores.size() > 0){
+                       newStore = updateNewStore(newStore);
+                    }
                     this.stores.add(newStore);
                     for(Store store: this.stores){
                         if(!this.name.equals(store.getName())){
@@ -130,6 +133,15 @@ public class Server {
                 return true;
         }
         return false;
+    }
+    
+    public Store updateNewStore(Store store){
+        ArrayList<Product> produtcs =  stores.get(0).getProducts();
+        for(Product product: produtcs){
+            Product newProduct =  new Product(product.getCode(),0);
+            store.getProducts().add(newProduct);
+        }
+        return store;
     }
 }
 
