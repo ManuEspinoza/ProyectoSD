@@ -74,18 +74,19 @@ public class Server {
                 sendMessage.writeObject(response);
             
             } else if("regProduct".equals(mi_paquete.getCode())){
-//                Product product = mi_paquete.getProduct();
-//                int selfStore = getSelfStore();
-//                Store storeUpdate = stores.get(selfStore);
-//                storeUpdate.getProducts().add(product);
-//                stores.set(selfStore,storeUpdate);
-//                
-//                for(int i = 0; i < stores.size(); i++){
-//                    if(!stores.get(i).getName().equals(this.name)){
-//                        stores.get(i).getProducts().add(new Product(product.getCode(),0));
-//                    }
-//                }
-//                
+                Product product = mi_paquete.getProduct();
+                int selfStore = getSelfStore();
+                System.out.println(selfStore);
+                Store storeUpdate = stores.get(selfStore);
+                storeUpdate.getProducts().add(product);
+                stores.set(selfStore,storeUpdate);
+                
+                for(int i = 0; i < stores.size(); i++){
+                    if(!stores.get(i).getName().equals(this.name)){
+                        stores.get(i).getProducts().add(new Product(product.getCode(),0));
+                    }
+                }
+                
 //                for(Store store: this.stores){
 //                    if(!this.name.equals(store.getName())){
 //                        Paquete paqueteUpdate = new Paquete("updateStores");
