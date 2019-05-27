@@ -70,6 +70,11 @@ public class Menu {
                 switch (opcion) {
                     case 1:
                         try{
+                            int total[] = new int [1000];
+                            for (int k=0; k<100; k++){ 
+                                total[k]=0;
+                            }
+                            int cantpro = 0;
                             Paquete paquete = new Paquete("ListProducto");
                             StoreRequest request = new StoreRequest();
                             Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
@@ -77,11 +82,15 @@ public class Menu {
                             for (int i = 0; i < stores.size(); i++) {
                                 ArrayList<Product> productos = stores.get(i).getProducts();
                                 System.out.println("\n");
+                                cantpro = productos.size();
                                 for (int j = 0; j < productos.size(); j++) {
-                                    System.out.print("Tienda: " +
-                                           stores.get(i).getName() + " Codigo producto: " +
-                                           productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
+                                    total[j] = productos.get(j).getQuantity() + total[j];
                                 }
+                            }
+                            ArrayList<Product> productos1 = stores.get(0).getProducts();
+                            for (int l = 0; l < cantpro; l++) {
+                                System.out.print("Codigo producto: " + productos1.get(l).getCode() + 
+                                    " Cantidad total: " + total[l] + "\n");
                             }
                             System.out.print("Presione una tecla para continuar..."); continuar = sn.nextInt();
                         }catch(IOException ex){
