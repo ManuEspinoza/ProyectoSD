@@ -9,6 +9,9 @@ import common.Product;
 import common.Store;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -53,6 +56,16 @@ public class Menu {
         this.name = name;
     }
     
+    public int compareTo(Product o) {
+        if (o.code < o.code) {
+            return -1;
+        }
+        if (o.code > o.code) {
+            return 1;
+        }
+            return 0;
+    }
+    
     public void mostrar(){
 
         Scanner sn = new Scanner(System.in);
@@ -71,7 +84,7 @@ public class Menu {
                     case 1:
                         try{
                             int total[] = new int [1000];
-                            for (int k=0; k<100; k++){ 
+                            for (int k=0; k<1000; k++){ 
                                 total[k]=0;
                             }
                             int cantpro = 0;
@@ -92,7 +105,6 @@ public class Menu {
                                 System.out.print("Codigo producto: " + productos1.get(l).getCode() + 
                                     " Cantidad total: " + total[l] + "\n");
                             }
-                            System.out.print("Presione una tecla para continuar..."); continuar = sn.nextInt();
                         }catch(IOException ex){
                             System.out.println("Error de sistema operativo");
                         }
@@ -140,7 +152,6 @@ public class Menu {
                                            productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
                                 }
                             }
-                            System.out.print("Presione una tecla para continuar..."); continuar = sn.nextInt();
                         }catch(IOException ex){
                             System.out.println("Error de sistema operativo");
                         }

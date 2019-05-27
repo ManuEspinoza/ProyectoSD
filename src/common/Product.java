@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @author Manuel Espinoza Isnere Hernandez Madelein Valderrabano
  */
 public class Product implements Serializable {
-    private int code;
+    public int code;
     private int quantity;
 
     public Product(int code, int quantity) {
@@ -40,5 +40,5 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" + "code=" + code + ", quantity=" + quantity + '}';
     }
-       
+           
 }
