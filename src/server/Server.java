@@ -87,14 +87,16 @@ public class Server {
                     }
                 }
                 
-//                for(Store store: this.stores){
-//                    if(!this.name.equals(store.getName())){
-//                        Paquete paqueteUpdate = new Paquete("updateStores");
-//                        paqueteUpdate.setStores(this.stores);
-//                        StoreRequest updateStores =  new StoreRequest();
-//                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
-//                    }
-//                }
+                for(Store store: this.stores){
+                    if(!this.name.equals(store.getName())){
+                        Paquete paqueteUpdate = new Paquete("updateStores");
+                        paqueteUpdate.setStores(this.stores);
+                        StoreRequest updateStores =  new StoreRequest();
+                        System.out.println(store.getIp());
+                        System.out.println(store.getPort());
+                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
+                    }
+                }
                 System.out.println(mi_paquete.getCode());
             }
             
