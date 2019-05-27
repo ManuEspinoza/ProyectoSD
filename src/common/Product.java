@@ -13,7 +13,6 @@ import java.io.Serializable;
  */
 public class Product implements Serializable {
     private int code;
-    private String name;
     private int quantity;
 
     public Product(int code, int quantity) {
@@ -29,14 +28,6 @@ public class Product implements Serializable {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public int getQuantity() {
         return quantity;
     }
@@ -47,7 +38,7 @@ public class Product implements Serializable {
 
     @Override
     public String toString() {
-        return "Product{" + "code=" + code + ", name=" + name + ", quantity=" + quantity + '}';
+        return "Product{" + "code=" + code + ", quantity=" + quantity + '}';
     }
        
 }

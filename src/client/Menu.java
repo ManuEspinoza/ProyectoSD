@@ -59,7 +59,7 @@ public class Menu {
         int opcion; //Guardaremos la opcion del usuario
         int codigo; int cantidad;
         while (!salir) {
-
+            
             System.out.println("Menú:\n");
             System.out.println(" 1. Listar productos de la empresa");
             System.out.println(" 2. Cargar productos de la empresa");
