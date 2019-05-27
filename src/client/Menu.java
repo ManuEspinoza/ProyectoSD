@@ -117,16 +117,16 @@ public class Menu {
                             System.out.print("Ingrese el codigo del producto: ");
                             codigo = sn.nextInt();
                           
-                                System.out.print("Ingrese la cantidad del producto: ");
-                                cantidad = sn.nextInt();
-                                
-                                    Product producto = new Product(codigo, cantidad);
-                                    Paquete paquete = new Paquete("regProduct");
-                                    paquete.setStore(this.store);
-                                    paquete.setProduct(producto);
-                                    StoreRequest request = new StoreRequest();
-                                    request.send(paquete, ip, port);
-                                    System.out.println("Producto agregado");
+                            System.out.print("Ingrese la cantidad del producto: ");
+                            cantidad = sn.nextInt();
+
+                            Product producto = new Product(codigo, cantidad);
+                            Paquete paquete = new Paquete("regProduct");
+                            paquete.setStore(this.store);
+                            paquete.setProduct(producto);
+                            StoreRequest request = new StoreRequest();
+                            request.send(paquete, ip, port);
+                            System.out.println("Producto agregado");
                                 
                           
                         }catch(IOException ex){

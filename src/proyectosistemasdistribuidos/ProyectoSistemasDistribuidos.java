@@ -49,11 +49,16 @@ public class ProyectoSistemasDistribuidos {
                 Paquete paqueteNewStore = new Paquete("regTienda");
                 paqueteNewStore.setStore(store);
                 StoreRequest request = new StoreRequest();
-                request.sendWithResponse(paqueteNewStore, ip, port);
+                Paquete paqueteResponse =  request.sendPaquete(paqueteNewStore, ip, port);
                 
-                Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);
-                menu.mostrar();
-               
+                if(paqueteResponse.getCode().equals("denied")){
+                    System.out.println("Ya existe una Tienda con ese nombre, por favor coloca otro nombre");
+                } else {
+                    System.out.println(paqueteResponse.getCode());
+                    Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);
+                    menu.mostrar();
+                }
+      
             } catch (IOException ex) {
                 System.out.println("error client message");
                 Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);

@@ -52,19 +52,26 @@ public class Server {
             if("regTienda".equals(mi_paquete.getCode())){
                 
                 Store newStore = mi_paquete.getStore();
-                this.stores.add(newStore);
-                for(Store store: this.stores){
-                    if(!this.name.equals(store.getName())){
-                        Paquete paqueteUpdate = new Paquete("updateStores");
-                        paqueteUpdate.setStores(this.stores);
-                        StoreRequest updateStores =  new StoreRequest();
-                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
+                if(!verifyName(newStore.getName())){
+                    this.stores.add(newStore);
+                    for(Store store: this.stores){
+                        if(!this.name.equals(store.getName())){
+                            Paquete paqueteUpdate = new Paquete("updateStores");
+                            paqueteUpdate.setStores(this.stores);
+                            StoreRequest updateStores =  new StoreRequest();
+                            updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
+                        }
                     }
+                    System.out.println(this.stores.toString());
+                    Paquete response = new Paquete("Tienda agregada");
+                    ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                    sendMessage.writeObject(response);
+                } else{
+                    Paquete response = new Paquete("denied");
+                    ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                    sendMessage.writeObject(response);
                 }
-                System.out.println(this.stores.toString());
-                Paquete response = new Paquete("Tienda agregada");
-                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
-                sendMessage.writeObject(response);
+                
             
             } else if("updateStores".equals(mi_paquete.getCode())){
                 this.stores = mi_paquete.getStores();
@@ -92,12 +99,9 @@ public class Server {
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
                         StoreRequest updateStores =  new StoreRequest();
-                        System.out.println(store.getIp());
-                        System.out.println(store.getPort());
                         updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
                     }
                 }
-                System.out.println(mi_paquete.getCode());
             }
             
             else if ("ListProducto".equals(mi_paquete.getCode())){
@@ -118,6 +122,14 @@ public class Server {
                 return i;
         }
         return -1;
+    }
+    
+    public boolean verifyName(String name){
+        for(int i = 0; i < stores.size();i++){
+            if(stores.get(i).getName().equals(name))
+                return true;
+        }
+        return false;
     }
 }
 
