@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Manuel Espinoza Isnere Hernandez Madelein Valderrabano
  */
-public class Product implements Serializable {
+public class Product implements Serializable, Comparable {
     public int code;
     private int quantity;
 
@@ -40,5 +40,11 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" + "code=" + code + ", quantity=" + quantity + '}';
     }
-           
+
+
+    @Override
+    public int compareTo(Object o) {
+        Product product = (Product) o;
+        return this.code - product.getCode();
+    }
 }

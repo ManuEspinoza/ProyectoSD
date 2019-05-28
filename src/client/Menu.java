@@ -94,12 +94,13 @@ public class Menu {
                             ArrayList<Store> stores = mi_paquete.getStores();
                             for (int i = 0; i < stores.size(); i++) {
                                 ArrayList<Product> productos = stores.get(i).getProducts();
-                                System.out.println("\n");
+                                
                                 cantpro = productos.size();
                                 for (int j = 0; j < productos.size(); j++) {
                                     total[j] = productos.get(j).getQuantity() + total[j];
                                 }
                             }
+                            System.out.println("\n");
                             ArrayList<Product> productos1 = stores.get(0).getProducts();
                             for (int l = 0; l < cantpro; l++) {
                                 System.out.print("Codigo producto: " + productos1.get(l).getCode() + 
@@ -144,11 +145,13 @@ public class Menu {
                             ArrayList<Store> stores = mi_paquete.getStores();
                             for (int i = 0; i < stores.size(); i++) {
                                 ArrayList<Product> productos = stores.get(i).getProducts();
+                                Collections.sort(productos);
                                 System.out.println("\n");
                                 for (int j = 0; j < productos.size(); j++) {
-                                    System.out.print("Tienda: " +
-                                           stores.get(i).getName() + " Codigo producto: " +
-                                           productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
+                                      System.out.println(stores.get(i).getName()+ " # " +productos.get(j).getCode()+ " # "+productos.get(j).getQuantity());
+//                                    System.out.print("Tienda: " +
+//                                           stores.get(i).getName() + " Codigo producto: " +
+//                                           productos.get(j).getCode() + " Cantidad: " + productos.get(j).getQuantity() + "\n");
                                 }
                             }
                         }catch(IOException ex){
