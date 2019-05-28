@@ -86,15 +86,27 @@ public class Server {
             } else if("regProduct".equals(mi_paquete.getCode())){
                 Product product = mi_paquete.getProduct();
                 int selfStore = getSelfStore();
-                System.out.println(selfStore);
-                Store storeUpdate = stores.get(selfStore);
-                storeUpdate.getProducts().add(product);
-                stores.set(selfStore,storeUpdate);
                 
-                for(int i = 0; i < stores.size(); i++){
-                    if(!stores.get(i).getName().equals(this.name)){
-                        stores.get(i).getProducts().add(new Product(product.getCode(),0));
-                    }
+                if(productExists(product.getCode())){
+                    Store storeUpdate = stores.get(selfStore);
+                    ArrayList<Product> produtcs = storeUpdate.getProducts();
+                    int producToUp = getProductToUpdate(produtcs,product.getCode());
+                    Product productU = produtcs.get(producToUp);
+                    productU.setQuantity(productU.getQuantity() + product.getQuantity());
+                    produtcs.set(producToUp, productU);
+                    storeUpdate.setProducts(produtcs);
+                    stores.set(selfStore,storeUpdate);
+                    
+                } else {
+                    Store storeUpdate = stores.get(selfStore);
+                    storeUpdate.getProducts().add(product);
+                    stores.set(selfStore,storeUpdate);
+                        
+                    for(int i = 0; i < stores.size(); i++){
+                        if(!stores.get(i).getName().equals(this.name)){
+                            stores.get(i).getProducts().add(new Product(product.getCode(),0));
+                        }
+                     }
                 }
                 
                 for(Store store: this.stores){
@@ -142,6 +154,19 @@ public class Server {
             store.getProducts().add(newProduct);
         }
         return store;
+    }
+    
+    public boolean productExists(int code){
+        ArrayList<Product> products = this.stores.get(0).getProducts();
+        return products.stream().anyMatch((product) -> (product.getCode() == code));
+    }
+    
+    public int getProductToUpdate(ArrayList<Product> products, int code){
+        for(int i = 0; i < products.size();i++){
+            if(products.get(i).getCode() ==  code)
+                return i;
+        }
+        return -1;
     }
 }
 
