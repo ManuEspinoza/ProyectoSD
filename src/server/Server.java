@@ -12,6 +12,7 @@ import common.Store;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -134,8 +135,16 @@ public class Server {
                 ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
                 sendMessage.writeObject(paquetet);
             }
-              
             
+             else if ("recupClient".equals(mi_paquete.getCode())){
+                String cadena;
+                FileReader f = new FileReader(new File("").getAbsolutePath()+"\\consistencia.txt");
+                BufferedReader b = new BufferedReader(f);
+                while((cadena = b.readLine())!=null) {
+                     System.out.println(cadena);
+                }
+                b.close();
+            }  
         }
     } 
     

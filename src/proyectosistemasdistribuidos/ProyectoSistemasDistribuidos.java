@@ -37,6 +37,29 @@ public class ProyectoSistemasDistribuidos {
             } catch (ClassNotFoundException  ex){
                 System.out.println("client server");
             }
+        }  else if(args[0].startsWith("recupClient")) {
+            try {
+                String storeParameters = args[3];
+                String[] parameters = storeParameters.split("#");
+                String nameStore = parameters[0];
+                int port = new Integer(args[2]);
+                String ip = args[1];
+                
+                Store store = new Store(nameStore, parameters[1], new Integer(parameters[2]));
+                Paquete paqueteNewStore = new Paquete("recupClient");
+                paqueteNewStore.setStore(store);
+                StoreRequest request = new StoreRequest();
+                Paquete paqueteResponse =  request.sendPaquete(paqueteNewStore, ip, port);
+                Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);
+                menu.mostrar();
+                
+      
+            } catch (IOException ex) {
+                System.out.println("error client message");
+                Logger.getLogger(ProyectoSistemasDistribuidos.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex){
+                System.out.println("Error clase no encontrada");
+            }
         } else {
             try {
                 String storeParameters = args[3];

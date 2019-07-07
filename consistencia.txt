@@ -1,2 +1,3 @@
-Esta es una linea de codigoHola
-Esta es una linea de codigoEsta es una linea de codigo
+Store{products=[Product{code=2, quantity=0}, Product{code=3, quantity=2}], name=TiendaIsnere, ip=192.168.0.102, port=9000}
+Store{products=[Product{code=2, quantity=2}, Product{code=3, quantity=0}], name=TiendaMade, ip=192.168.0.103, port=9800}
+Store{products=[Product{code=2, quantity=2}, Product{code=3, quantity=0}], name=TiendaManuel, ip=192.168.0.106, port=9500}
