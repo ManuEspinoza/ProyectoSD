@@ -79,10 +79,6 @@ public class Server {
             } else if("updateStores".equals(mi_paquete.getCode())){
                 this.stores = mi_paquete.getStores();
                 System.out.println(this.stores.toString());
-                Paquete response = new Paquete("Lista Actualizada");
-                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
-                sendMessage.writeObject(response);
-            
             } else if("regProduct".equals(mi_paquete.getCode())){
                 Product product = mi_paquete.getProduct();
                 int selfStore = getSelfStore();
@@ -114,7 +110,7 @@ public class Server {
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
                         StoreRequest updateStores =  new StoreRequest();
-                        updateStores.sendWithResponse(paqueteUpdate, store.getIp(), store.getPort());
+                        updateStores.send(paqueteUpdate, store.getIp(), store.getPort());
                     }
                 }
             }

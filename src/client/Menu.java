@@ -90,6 +90,7 @@ public class Menu {
                             int cantpro = 0;
                             Paquete paquete = new Paquete("ListProducto");
                             StoreRequest request = new StoreRequest();
+                            
                             Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
                             ArrayList<Store> stores = mi_paquete.getStores();
                             for (int i = 0; i < stores.size(); i++) {
@@ -141,6 +142,7 @@ public class Menu {
                         try{
                             Paquete paquete = new Paquete("ListProducto");
                             StoreRequest request = new StoreRequest();
+                            System.out.println(ip+" "+port);
                             Paquete mi_paquete = request.sendPaquete(paquete, ip, port);
                             ArrayList<Store> stores = mi_paquete.getStores();
                             for (int i = 0; i < stores.size(); i++) {
