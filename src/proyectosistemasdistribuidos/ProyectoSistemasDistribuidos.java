@@ -39,15 +39,14 @@ public class ProyectoSistemasDistribuidos {
             }
         }  else if(args[0].startsWith("recupClient")) {
             try {
-                String storeParameters = args[3];
+                String storeParameters = args[1];
                 String[] parameters = storeParameters.split("#");
                 String nameStore = parameters[0];
-                int port = new Integer(args[2]);
-                String ip = args[1];
-                
+               
                 Store store = new Store(nameStore, parameters[1], new Integer(parameters[2]));
                 Paquete paqueteNewStore = new Paquete("recupClient");
-                paqueteNewStore.setStore(store);
+                paqueteNewStore.setIp(parameters[3]);
+                paqueteNewStore.setPort(new Integer(parameters[4]));
                 StoreRequest request = new StoreRequest();
                 request.send(paqueteNewStore, parameters[1], new Integer(parameters[2]));
                 Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);

@@ -20,6 +20,25 @@ public class Paquete implements Serializable{
     Store store;
     ArrayList<Store> stores;
     Product product;
+    int port;
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
+    }
+
+    public String getIp() {
+        return ip;
+    }
+
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+    String ip;
+    
 
     public Product getProduct() {
         return product;
