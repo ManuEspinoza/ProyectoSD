@@ -14,8 +14,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -110,7 +113,7 @@ public class Server {
                 }
                 
                 for(Store store: this.stores){
-                    if(!this.name.equals(store.getName()) && isPortInUse(store.getIp(),store.getPort())){
+                    if(!this.name.equals(store.getName()) && verifyUp(store.getIp(), store.getPort())){
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
                         StoreRequest updateStores =  new StoreRequest();
@@ -139,6 +142,22 @@ public class Server {
         return -1;
     }
     
+    public boolean verifyUp(String host, int port){
+        boolean result = true;
+        try{
+            Paquete paqueteUpdate = new Paquete("");
+            StoreRequest updateStores =  new StoreRequest();
+            updateStores.send(paqueteUpdate, host, port);
+        } catch(ConnectException e){
+            result = false;
+        } catch (IOException e){
+            result = false;
+        } catch(ClassNotFoundException e){
+            
+        }
+        return result;
+    }
+    
     public boolean verifyName(String name){
         for(int i = 0; i < stores.size();i++){
             if(stores.get(i).getName().equals(name))
@@ -147,21 +166,26 @@ public class Server {
         return false;
     }
     
-    private boolean isPortInUse(String host, int port) {
-        // Assume no connection is possible.
-        boolean result = false;
-
-        try {
-          (new Socket(host, port)).close();
-          result = true;
+    public boolean isActive(String host, int port) {
+    Socket s = null;
+    try {
+        s = new Socket();
+        s.setReuseAddress(true);
+        SocketAddress sa = new InetSocketAddress(host, port);
+        s.connect(sa, 3000);
+        return true;
+    } catch (IOException e) {
+        e.printStackTrace();
+    } finally {
+        if (s != null) {
+            try {
+                s.close();
+            } catch (IOException e) {
+            }
         }
-        catch(SocketException e) {
-          // Could not connect.
-        } catch (IOException ex) {
-            
-        }
-        return result;
-      }
+    }
+    return false;
+}
     
     public Store updateNewStore(Store store){
         ArrayList<Product> produtcs =  stores.get(0).getProducts();
