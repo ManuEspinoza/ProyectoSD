@@ -8,6 +8,7 @@ package client;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 
 /**
@@ -28,6 +29,15 @@ public class StoreRequest {
         clientSocket.close();
         sendMessage.close();
     }
+    
+    public void sendVerify(String ip, int port) throws IOException, ClassNotFoundException {
+        //Envia peticion al servidor
+        Socket socket = new Socket();
+        socket.connect(new InetSocketAddress(ip, port), 1000);
+        socket.close();
+    }
+    
+    
     
     public void sendWithResponse(Paquete paquete, String ip, int port) throws IOException, ClassNotFoundException {
         //Envia peticion al servidor
