@@ -157,7 +157,7 @@ public class Menu {
                                 }
                             }
                         }catch(IOException ex){
-                            System.out.println("Error de sistema operativo");
+                            System.out.println("Error de opcion 3");
                         }
                         catch(ClassNotFoundException ex){
                             System.out.println("Error de clase no encontrada");

@@ -145,8 +145,9 @@ public class Server {
     public boolean verifyUp(String host, int port){
         boolean result = true;
         try{
+            Paquete paqueteUpdate = new Paquete("");
             StoreRequest updateStores =  new StoreRequest();
-            updateStores.sendVerify(host, port);
+            updateStores.send(paqueteUpdate, host, port);
         } catch(ConnectException e){
             result = false;
         } catch (IOException e){
@@ -164,7 +165,7 @@ public class Server {
         }
         return false;
     }
-   
+    
     public Store updateNewStore(Store store){
         ArrayList<Product> produtcs =  stores.get(0).getProducts();
         for(Product product: produtcs){
