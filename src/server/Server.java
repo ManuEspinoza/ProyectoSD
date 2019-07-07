@@ -66,6 +66,7 @@ public class Server {
                        newStore = updateNewStore(newStore);
                     }
                     this.stores.add(newStore);
+                    writeList(this.stores);
                     for(Store store: this.stores){
                         if(!this.name.equals(store.getName())){
                             Paquete paqueteUpdate = new Paquete("updateStores");
