@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
-import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
@@ -153,15 +152,13 @@ public class Server {
         boolean result = false;
 
         try {
-          Socket client=new Socket();   
-          client.connect(new InetSocketAddress(host,port),2000);
-          client.close();
+          (new Socket(host, port)).close();
           result = true;
         }
         catch(SocketException e) {
           // Could not connect.
         } catch (IOException ex) {
-          // Could not connect.  
+            
         }
         return result;
       }
