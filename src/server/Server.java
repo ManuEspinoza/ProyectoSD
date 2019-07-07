@@ -10,6 +10,9 @@ import client.StoreRequest;
 import common.Product;
 import common.Store;
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -85,6 +88,7 @@ public class Server {
             } else if("updateStores".equals(mi_paquete.getCode())){
                 this.stores = mi_paquete.getStores();
                 System.out.println(this.stores.toString());
+                writeList(this.stores);
             }
             else if("regProduct".equals(mi_paquete.getCode())){
                 Product product = mi_paquete.getProduct();
@@ -133,6 +137,22 @@ public class Server {
             
         }
     } 
+    
+    public void writeList(ArrayList<Store> stores){
+        try{
+            FileWriter w = new FileWriter(new File("").getAbsolutePath()+"\\consistencia.txt");
+            BufferedWriter bw = new BufferedWriter(w);
+            PrintWriter wr = new PrintWriter(bw);  
+            for(Store store: stores){
+                wr.println(store.toString());
+            }
+            wr.close();
+            bw.close();
+        }catch(IOException e){
+
+        }
+    }
+        
     
     public int getSelfStore(){
         for(int i = 0; i < stores.size();i++){
@@ -187,6 +207,11 @@ public class Server {
         }
         return -1;
     }
+    
+    
+
+ 
+
 }
 
    
