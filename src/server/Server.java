@@ -145,9 +145,8 @@ public class Server {
     public boolean verifyUp(String host, int port){
         boolean result = true;
         try{
-            Paquete paqueteUpdate = new Paquete("");
             StoreRequest updateStores =  new StoreRequest();
-            updateStores.send(paqueteUpdate, host, port);
+            updateStores.sendVerify(host, port);
         } catch(ConnectException e){
             result = false;
         } catch (IOException e){
@@ -165,28 +164,7 @@ public class Server {
         }
         return false;
     }
-    
-    public boolean isActive(String host, int port) {
-    Socket s = null;
-    try {
-        s = new Socket();
-        s.setReuseAddress(true);
-        SocketAddress sa = new InetSocketAddress(host, port);
-        s.connect(sa, 3000);
-        return true;
-    } catch (IOException e) {
-        e.printStackTrace();
-    } finally {
-        if (s != null) {
-            try {
-                s.close();
-            } catch (IOException e) {
-            }
-        }
-    }
-    return false;
-}
-    
+   
     public Store updateNewStore(Store store){
         ArrayList<Product> produtcs =  stores.get(0).getProducts();
         for(Product product: produtcs){
