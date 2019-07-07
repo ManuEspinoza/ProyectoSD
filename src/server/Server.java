@@ -141,7 +141,20 @@ public class Server {
                 FileReader f = new FileReader(new File("").getAbsolutePath()+"\\consistencia.txt");
                 BufferedReader b = new BufferedReader(f);
                 while((cadena = b.readLine())!=null) {
-                     System.out.println(cadena);
+                     
+                     String[] parametros = cadena.split("&");
+                     String tienda = parametros[0];
+                     String productos =  parametros[1];
+                     
+                     String[] tiend = tienda.split("#");
+                     Store stor = new Store(tiend[0],tiend[1],new Integer(tiend[2]));
+                     String[] prod = productos.split(",");
+                     for(String pr: prod){
+                         String[] param = pr.split("#");
+                         Product pro = new Product(new Integer(param[0]), new Integer(param[1]));
+                         stor.getProducts().add(pro);
+                     }
+                     this.stores.add(stor);
                 }
                 b.close();
             }  
@@ -156,7 +169,7 @@ public class Server {
             for(Store store: stores){
                 wr.write(store.getName()+"#"+store.getIp()+"#"+store.getPort());
                 ArrayList<Product> produtcs = store.getProducts();
-                wr.append("|");
+                wr.append("&");
                 for(Product product: produtcs){
                    wr.append(product.getCode()+"#"+product.getQuantity()+",");
                 }
@@ -223,11 +236,6 @@ public class Server {
         }
         return -1;
     }
-    
-    
-
- 
-
 }
 
    
