@@ -49,7 +49,7 @@ public class ProyectoSistemasDistribuidos {
                 Paquete paqueteNewStore = new Paquete("recupClient");
                 paqueteNewStore.setStore(store);
                 StoreRequest request = new StoreRequest();
-                Paquete paqueteResponse =  request.sendPaquete(paqueteNewStore, ip, port);
+                request.send(paqueteNewStore, parameters[1], new Integer(parameters[2]));
                 Menu menu = new Menu(parameters[1],new Integer(parameters[2]),store);
                 menu.mostrar();
                 

@@ -154,7 +154,13 @@ public class Server {
             BufferedWriter bw = new BufferedWriter(w);
             PrintWriter wr = new PrintWriter(bw);  
             for(Store store: stores){
-                wr.println(store.toString());
+                wr.write(store.getName()+"#"+store.getIp()+"#"+store.getPort());
+                ArrayList<Product> produtcs = store.getProducts();
+                wr.append("|");
+                for(Product product: produtcs){
+                   wr.append(product.getCode()+"#"+product.getQuantity()+",");
+                }
+                wr.println("");
             }
             wr.close();
             bw.close();
