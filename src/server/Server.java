@@ -115,7 +115,7 @@ public class Server {
                         }
                      }
                 }
-                
+                writeList(this.stores);
                 for(Store store: this.stores){
                     if(!this.name.equals(store.getName()) && verifyUp(store.getIp(), store.getPort())){
                         Paquete paqueteUpdate = new Paquete("updateStores");
