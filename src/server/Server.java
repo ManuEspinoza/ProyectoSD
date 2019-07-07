@@ -14,10 +14,14 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -107,7 +111,7 @@ public class Server {
                 }
                 
                 for(Store store: this.stores){
-                    if(!this.name.equals(store.getName())){
+                    if(!this.name.equals(store.getName()) && isPortInUse(store.getIp(),store.getPort())){
                         Paquete paqueteUpdate = new Paquete("updateStores");
                         paqueteUpdate.setStores(this.stores);
                         StoreRequest updateStores =  new StoreRequest();
@@ -143,6 +147,24 @@ public class Server {
         }
         return false;
     }
+    
+    private boolean isPortInUse(String host, int port) {
+        // Assume no connection is possible.
+        boolean result = false;
+
+        try {
+          Socket client=new Socket();   
+          client.connect(new InetSocketAddress(host,port),2000);
+          client.close();
+          result = true;
+        }
+        catch(SocketException e) {
+          // Could not connect.
+        } catch (IOException ex) {
+          // Could not connect.  
+        }
+        return result;
+      }
     
     public Store updateNewStore(Store store){
         ArrayList<Product> produtcs =  stores.get(0).getProducts();
