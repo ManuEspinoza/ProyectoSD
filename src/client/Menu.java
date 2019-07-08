@@ -203,12 +203,25 @@ public class Menu {
                             Paquete paquete = new Paquete("listCompra");
                             StoreRequest request = new StoreRequest();
                             Paquete paque = request.sendPaquete(paquete, ip, port);
-                            ArrayList<Compra> compras = paque.getStore().getCompras();
-                            Collections.sort(compras);
-                            System.out.println("Compras");
-                            for (int j = 0; j < compras.size(); j++) {
-                                System.out.println(compras.get(j).getClientName()+"  #  "+compras.get(j).getProduct().getCode()+"  #  "+compras.get(j).getProduct().getQuantity());
+                            ArrayList<Store> stores = paque.getStores();
+                            ArrayList<CompraTotal> comprastotales = new ArrayList();
+                            for(Store store: stores){
+                                ArrayList<Compra> compras = store.getCompras();
+                                for(Compra compra: compras){
+                                    Product producto = compra.getProduct();
+                                    CompraTotal compratotal = new CompraTotal(compra.getClientCode(),producto.getQuantity(), producto.getCode());
+                                    comprastotales.add(compratotal);                 
                                 }
+                            }
+                            Collections.sort(comprastotales);
+                            for(CompraTotal compratotal: comprastotales){
+                                System.out.println(compratotal.getCodigoCliente()+"#"+compratotal.getCodigoProducto()+"#"+compratotal.getTotal());
+                            }
+//                            Collections.sort(compras);
+//                            System.out.println("Compras");
+//                            for (int j = 0; j < compras.size(); j++) {
+//                                System.out.println(compras.get(j).getClientName()+"  #  "+compras.get(j).getProduct().getCode()+"  #  "+compras.get(j).getProduct().getQuantity());
+//                                }
                             
                         }catch(IOException ex){
                             System.out.println("Error de sistema operativo");

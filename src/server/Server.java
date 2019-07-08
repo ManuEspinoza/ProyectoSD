@@ -148,24 +148,27 @@ public class Server {
                          String[] parametros = cadena.split("&");
                          String tienda = parametros[0];
                          String productos =  parametros[1];
-                         String compras =  parametros[2];
-
                          String[] tiend = tienda.split("#");
                          Store stor = new Store(tiend[0],tiend[1],new Integer(tiend[2]));
-                         String[] prod = productos.split(",");
-                         for(String pr: prod){
-                             String[] param = pr.split("#");
-                             Product pro = new Product(new Integer(param[0]), new Integer(param[1]));
-                             stor.getProducts().add(pro);
-                         }
-                         String[] com = compras.split(",");
+                         
+                         if(parametros.length ==3){
+                             String compras =  parametros[2];
+                             String[] com = compras.split(",");
                          for(String cm: com){
                              String[] param = cm.split("#");
                              Product pro = new Product(new Integer(param[2]), new Integer(param[3]));
                              Compra comp = new Compra(new Integer(param[1]), param[0], pro);
                              stor.getCompras().add(comp);
                          }
-                         
+                         }
+                   
+                         String[] prod = productos.split(",");
+                         for(String pr: prod){
+                             String[] param = pr.split("#");
+                             Product pro = new Product(new Integer(param[0]), new Integer(param[1]));
+                             stor.getProducts().add(pro);
+                         }
+                        
                          this.stores.add(stor);
                     }
                     b.close();  
@@ -207,10 +210,8 @@ public class Server {
                         }
                     }
             } else if("listCompra".equals(mi_paquete.getCode())){
-                int selfStore = getSelfStore();
-                Store storeUpdate = stores.get(selfStore);
                 Paquete paquetet = new Paquete("");
-                paquetet.setStore(storeUpdate);
+                paquetet.setStores(this.stores);
                 ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
                 sendMessage.writeObject(paquetet); 
             }
