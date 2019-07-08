@@ -17,12 +17,23 @@ public class Store implements Serializable {
     private String name;
     private String ip;
     private int port;
+    private ArrayList<Compra> compras;
+
+    public ArrayList<Compra> getCompras() {
+        return compras;
+    }
+
+    public void setCompras(ArrayList<Compra> compras) {
+        this.compras = compras;
+    }
+    
 
     public Store(String name, String ip, int port) {
         this.name = name;
         this.ip = ip;
         this.port = port;
         products = new ArrayList();
+        compras = new ArrayList();
     }
 
     public ArrayList<Product> getProducts() {
@@ -59,6 +70,8 @@ public class Store implements Serializable {
 
     @Override
     public String toString() {
-        return "Store{" + "products=" + products + ", name=" + name + ", ip=" + ip + ", port=" + port + '}';
-    }        
+        return "Store{" + "products=" + products + ", name=" + name + ", ip=" + ip + ", port=" + port + ", compras=" + compras + '}';
+    }
+
+        
 }

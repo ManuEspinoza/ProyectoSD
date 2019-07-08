@@ -1,5 +1,6 @@
 package client;
 
+import common.Compra;
 import common.Product;
 import common.Store;
 import java.io.Serializable;
@@ -21,7 +22,17 @@ public class Paquete implements Serializable{
     ArrayList<Store> stores;
     Product product;
     int port;
+    Compra compra;
 
+    public Compra getCompra() {
+        return compra;
+    }
+
+    public void setCompra(Compra compra) {
+        this.compra = compra;
+    }
+    
+    
     public int getPort() {
         return port;
     }

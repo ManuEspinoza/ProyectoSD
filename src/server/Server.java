@@ -7,6 +7,7 @@ package server;
 
 import client.Paquete;
 import client.StoreRequest;
+import common.Compra;
 import common.Product;
 import common.Store;
 import java.io.BufferedReader;
@@ -147,6 +148,7 @@ public class Server {
                          String[] parametros = cadena.split("&");
                          String tienda = parametros[0];
                          String productos =  parametros[1];
+                         String compras =  parametros[2];
 
                          String[] tiend = tienda.split("#");
                          Store stor = new Store(tiend[0],tiend[1],new Integer(tiend[2]));
@@ -156,6 +158,14 @@ public class Server {
                              Product pro = new Product(new Integer(param[0]), new Integer(param[1]));
                              stor.getProducts().add(pro);
                          }
+                         String[] com = compras.split(",");
+                         for(String cm: com){
+                             String[] param = cm.split("#");
+                             Product pro = new Product(new Integer(param[2]), new Integer(param[3]));
+                             Compra comp = new Compra(new Integer(param[1]), param[0], pro);
+                             stor.getCompras().add(comp);
+                         }
+                         
                          this.stores.add(stor);
                     }
                     b.close();  
@@ -170,6 +180,38 @@ public class Server {
                     response.setStores(this.stores);
                     ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
                     sendMessage.writeObject(response);
+            } else if("regCompra".equals(mi_paquete.getCode())){
+                
+                    Compra compra = mi_paquete.getCompra();
+                    int selfStore = getSelfStore();
+                    Store storeUpdate = stores.get(selfStore);
+                    ArrayList<Product> produtcs = storeUpdate.getProducts();
+                    ArrayList<Compra> compras = storeUpdate.getCompras();
+                    compras.add(compra);
+                    int producToUp = getProductToUpdate(produtcs,compra.getProduct().getCode());
+                    Product productU = produtcs.get(producToUp);
+                    productU.setQuantity(productU.getQuantity() - compra.getProduct().getQuantity());
+                    produtcs.set(producToUp, productU);
+                    storeUpdate.setProducts(produtcs);
+                    storeUpdate.setCompras(compras);
+                    stores.set(selfStore,storeUpdate);
+                    
+                    writeList(this.stores);
+                    for(Store store: this.stores){
+                        if(!this.name.equals(store.getName()) && verifyUp(store.getIp(), store.getPort())){
+                            Paquete paqueteUpdate = new Paquete("updateStores");
+                            paqueteUpdate.setStores(this.stores);
+                            StoreRequest updateStores =  new StoreRequest();
+                            updateStores.send(paqueteUpdate, store.getIp(), store.getPort());
+                        }
+                    }
+            } else if("listCompra".equals(mi_paquete.getCode())){
+                int selfStore = getSelfStore();
+                Store storeUpdate = stores.get(selfStore);
+                Paquete paquetet = new Paquete("");
+                paquetet.setStore(storeUpdate);
+                ObjectOutputStream sendMessage = new ObjectOutputStream(clientSocket.getOutputStream());
+                sendMessage.writeObject(paquetet); 
             }
         }
     } 
@@ -185,6 +227,11 @@ public class Server {
                 wr.append("&");
                 for(Product product: produtcs){
                    wr.append(product.getCode()+"#"+product.getQuantity()+",");
+                }
+                ArrayList<Compra> compras = store.getCompras();
+                wr.append("&");
+                for(Compra compra: compras){
+                   wr.append(compra.getClientName()+"#"+compra.getClientCode()+"#"+compra.getProduct().getCode()+"#"+compra.getProduct().getQuantity()+",");
                 }
                 wr.println("");
             }

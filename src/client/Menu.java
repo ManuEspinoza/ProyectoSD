@@ -5,6 +5,7 @@
  */
 package client;
 
+import common.Compra;
 import common.Product;
 import common.Store;
 import java.io.IOException;
@@ -76,7 +77,9 @@ public class Menu {
             System.out.println("\n Menú:\n");
             System.out.println(" 1. Listar productos de la empresa");
             System.out.println(" 2. Cargar productos de la empresa");
-            System.out.println(" 3. Listar productos de la empresa por tienda");            
+            System.out.println(" 3. Listar productos de la empresa por tienda"); 
+            System.out.println(" 4. Registrar compra"); 
+            System.out.println(" 5. Listar compras");
             try{
                 System.out.print("Escribe una de las opciones: ");
                 opcion = sn.nextInt();
@@ -164,12 +167,59 @@ public class Menu {
                         }
                         break;
                     case 4:
-                        System.out.println("Has seleccionado la opcion 3");
+                        try{
+                            String nameClient;
+                            sn.nextLine();
+                            System.out.print("Ingrese el nombre del cliente: ");
+                            nameClient = sn.nextLine();
+                            
+                            System.out.print("Ingrese el codigo del cliente: ");
+                            int codigoClient = sn.nextInt();
+                            
+                            System.out.print("Ingrese el codigo del producto: ");
+                            codigo = sn.nextInt();
+                          
+                            System.out.print("Ingrese la cantidad del producto: ");
+                            cantidad = sn.nextInt();
+                            
+                            Product producto = new Product(codigo, cantidad);
+                            Compra compra = new Compra(codigoClient,nameClient,producto);
+                            Paquete paquete = new Paquete("regCompra");
+                            paquete.setCompra(compra);
+                            StoreRequest request = new StoreRequest();
+                            request.send(paquete, ip, port);
+                            System.out.println("Compra agregada");
+                                
+                          
+                        }catch(IOException ex){
+                            System.out.println("Error de sistema operativo");
+                        }
+                        catch(ClassNotFoundException ex){
+                          System.out.println("Error de clase no encontrada");
+                        }
+                        break;
+                        case 5:
+                        try{                            
+                            Paquete paquete = new Paquete("listCompra");
+                            StoreRequest request = new StoreRequest();
+                            Paquete paque = request.sendPaquete(paquete, ip, port);
+                            ArrayList<Compra> compras = paque.getStore().getCompras();
+                            Collections.sort(compras);
+                            System.out.println("Compras");
+                            for (int j = 0; j < compras.size(); j++) {
+                                System.out.println(compras.get(j).getClientName()+"  #  "+compras.get(j).getProduct().getCode()+"  #  "+compras.get(j).getProduct().getQuantity());
+                                }
+                            
+                        }catch(IOException ex){
+                            System.out.println("Error de sistema operativo");
+                        }
+                        catch(ClassNotFoundException ex){
+                          System.out.println("Error de clase no encontrada");
+                        }
                         break;
                     default:
                         System.out.println("Solo números entre 1 y 4");
                         }
-
             }catch (InputMismatchException e) {
                 System.out.println("Debes insertar un número");
                 sn.next();
