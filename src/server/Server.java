@@ -174,6 +174,7 @@ public class Server {
                       StoreRequest updateStores =  new StoreRequest();
                       Paquete paquete = updateStores.sendPaquete(paqueteUpdate, mi_paquete.getIp(), mi_paquete.getPort());
                       this.stores = paquete.getStores();
+                      writeList(this.stores);
                     }
             } else if("dameLista".equals(mi_paquete.getCode())){
                     Paquete response = new Paquete("Tienda agregada");
